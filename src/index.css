@@ -1,5 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
 
+:root{
+    --lightBg:#F4F4F6;
+    --whiteBg:#FFFDFA;
+    --secondaryCol:#4050D2;
+    --navColor:#FEF3E3;
+    --textColor:#000000;
+    --navColorDark:#BDB5A8;
+    --textColorLight:#FFFFFF;
+    --transition: all .4s; 
+}
 *{
     font-family: Poppins;
     margin: 0;
@@ -9,17 +19,9 @@
     user-select: none;
 }
 
-:root{
-    --transition: all .4s; 
-    --lightBg:'#F4F4F6';
-    --whiteBg:'#FFFDFA';
-    --secondaryCol:'#4050D2';
-    --navColor:'#EBE7D9';
-    --textColor:'#000000';
-    --navColorDark:'#DEDEDE';
-    --textColorLight:'#FFFFFF';
+html{
+    scroll-behavior: smooth;
 }
-
 ::-webkit-scrollbar{
     display: none;
 }

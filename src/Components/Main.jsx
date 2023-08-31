@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Main.css'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaLocationCrosshairs } from 'react-icons/fa6'
@@ -19,14 +19,16 @@ const Main = () => {
             <div className="search">
                 <AiOutlineSearch/>
                 <input type="text" placeholder='Search for places...' />
-                <FaLocationCrosshairs/>
+                <div className="icon">
+                  <FaLocationCrosshairs className='icon'/>
+                </div>
             </div>
             <div className="weather">
                 <img src={require('../Assets/Weather/sunnyCloudy.png')} alt="" />
             </div>
             <div className="temp">
               <h3>12&deg;C</h3>
-              <h5>{dayOfWeek},{time.getHours()}:{time.getMinutes()}</h5>
+              <h5>{dayOfWeek},<span> {(time.getHours()>=0 && time.getHours()<=9)?`0${time.getHours()}`:time.getHours()}:{(time.getMinutes()>=0 && time.getMinutes()<=9)?`0${time.getMinutes()}`:time.getMinutes()}</span></h5>
             </div>
             <div className="content">
               <div className="box">
@@ -45,11 +47,11 @@ const Main = () => {
         <div className="right">
           <div className="header">
             <div className="box">
-              <button>Today</button>
+              <button className='active'>Today</button>
               <button>Week</button>
             </div>
             <div className="box">
-              <button>&deg;C</button>
+              <button className='active'>&deg;C</button>
               <button>&deg;F</button>
             </div>
           </div>
