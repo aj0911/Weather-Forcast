@@ -1,27 +1,62 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Main.css'
-import { AiOutlineSearch } from 'react-icons/ai'
+import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai'
 import { FaLocationCrosshairs } from 'react-icons/fa6'
 import { getDayName } from './Helper/Helper'
+import api from 'axios'
 
 const Main = () => {
   const date = new Date(Date.now());
   const dateString = `${date.getDay()}/${date.getMonth()+1}/${date.getFullYear()}`;
   const [time,setTime] = useState(date);
-  const dayOfWeek = getDayName(dateString)
+  const dayOfWeek = getDayName(dateString);
   setInterval(()=>setTime(new Date(Date.now())),1000);
+  const [coords,setCoords] = useState('');
+  const [search,setSearch] = useState('');
+  const getCoordinates = ()=>{
+    if(!navigator.geolocation){
+      alert('Geolocation is not supported by this browser');
+      return;
+    }
+    if(coords==='')
+    navigator.geolocation.getCurrentPosition(pos=>setCoords(pos.coords))
+  }
+  const getWeather= ()=>{
+    if(search===''){
+      getCoordinates();
+      api.get(`https://api.openweathermap.org/data/2.5/weather?lat=${coords.latitude}&lon=${coords.longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(data=>{
+        console.log(data);
+      }).catch(error=>{
+        console.log(error.response.data.message)
+      }).finally(()=>{
+        setSearch('');
+      })
+    }
+    else {
+      api.get(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(data=>{
+        console.log(data);
+      }).catch(error=>{
+        console.log(error.response.data.message)
+      }).finally(()=>{
+        setSearch('');
+      })
+    }
+  }
   useEffect(()=>{
-
-  },[])
+    getWeather();
+  },[coords])
   return (
     <div className="main">
         <div className="left">
             <div className="search">
                 <AiOutlineSearch/>
-                <input type="text" placeholder='Search for places...' />
-                <div className="icon">
-                  <FaLocationCrosshairs className='icon'/>
-                </div>
+                <input value={search} onChange={e=>setSearch(e.target.value)} type="text" placeholder='Search for places...' />
+                {
+                  (search.length>0)?
+                  <div className="icon" onClick={()=>getWeather()}>
+                    <AiOutlineSend/>
+                  </div>:''
+                }
             </div>
             <div className="weather">
                 <img src={require('../Assets/Weather/sunnyCloudy.png')} alt="" />

@@ -32,14 +32,14 @@
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 }
 .main .left .search .icon{
-    background-color: var(--navColor);
-    padding: 4px;
+    color: var(--textColor);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    font-size: 1.5rem;
-    color: var(--textColor);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: var(--transition);
 }
 .main .left .search input{
     font-size: 1rem;
