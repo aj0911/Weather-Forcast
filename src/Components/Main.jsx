@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './Main.css'
-import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai'
-import { FaLocationArrow } from 'react-icons/fa'
+import { AiFillHome, AiOutlineSearch, AiOutlineSend } from 'react-icons/ai'
 import { getDayName } from './Helper/Helper'
 import api from 'axios'
 import Loader from './Helper/Loader'
-import { toast } from 'react-toastify'
 import TodayDisplay from './TodayDisplay'
 import WeekDisplay from './WeekDisplay'
 
@@ -21,63 +19,49 @@ const Main = () => {
   const [weekData,setWeekData] = useState('');
   const [unit,setUnit] = useState('metric');
   const [isToday,setIsToday]=useState(true);
+  const [error,setError] = useState('');
 
   const getWeather= ()=>{
     setLoader(true);
-    if(isToday){
-      if(search===''){
-        if(!navigator.geolocation){
-          alert('Geolocation is not supported by this browser');
-          return;
-        }
-        navigator.geolocation.getCurrentPosition(pos=>{
-          api.get(`https://api.openweathermap.org/data/2.5/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&units=${unit}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(data=>{
-            setData(data.data);
-          }).catch(error=>{
-            toast.warn(error.response.data.message)
-          }).finally(()=>{
-            setLoader(false);
-          })
-        })
+    if(search===''){
+      if(!navigator.geolocation){
+        alert('Geolocation is not supported by this browser');
+        return;
       }
-      else {
-        api.get(`https://api.openweathermap.org/data/2.5/weather?q=${search}&units=${unit}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(data=>{
+      navigator.geolocation.getCurrentPosition(pos=>{
+        api.get(`https://api.openweathermap.org/data/2.5/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&units=${unit}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(data=>{
+          setError('');
           setData(data.data);
-          console.log(data.data)
         }).catch(error=>{
-          toast.warn(error.response.data.message)
-        }).finally(()=>{
-          setLoader(false);
+        setError(error.response.data.message);
         })
-      }
-    }
-    else{
-      if(search===''){
-        if(!navigator.geolocation){
-          alert('Geolocation is not supported by this browser');
-          return;
-        }
-        navigator.geolocation.getCurrentPosition(pos=>{
-          api.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&units=${unit}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(data=>{
-            setWeekData(data.data);
-            console.log(data.data);
-          }).catch(error=>{
-            console.log(error);
-          }).finally(()=>{
-            setLoader(false);
-          })
-        })
-      }
-      else {
-        api.get(`https://api.openweathermap.org/data/2.5/forecast?q=${search}&units=${unit}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(res=>{
+
+        api.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&units=${unit}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(res=>{
+          setError('');
           setWeekData(res.data);
-          console.log(res.data);
         }).catch(error=>{
-          toast.warn(error.response)
+        setError(error.response.data.message);
         }).finally(()=>{
           setLoader(false);
         })
-      }
+      })
+    }
+    else {
+      api.get(`https://api.openweathermap.org/data/2.5/weather?q=${search}&units=${unit}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(data=>{
+          setError('');
+          setData(data.data);
+      }).catch(error=>{
+        setError(error.response.data.message);
+      })
+
+      api.get(`https://api.openweathermap.org/data/2.5/forecast?q=${search}&units=${unit}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`).then(res=>{
+        setError('');
+        setWeekData(res.data);
+      }).catch(error=>{
+        setError(error.response.data.message);
+      }).finally(()=>{
+        setLoader(false);
+      })
     }
   }
 
@@ -99,27 +83,32 @@ const Main = () => {
                     <AiOutlineSend/>
                   </div>:
                   <div className="icon" onClick={()=>getWeather()}>
-                    <FaLocationArrow/>
+                    <AiFillHome/>
                   </div>
                 }
             </div>
-            <div className="temp">
-              <h3>{data.main.temp}&deg;{(unit==='metric')?'C':'F'}</h3>
-              <h5>{dayOfWeek},<span> {(time.getHours()>=0 && time.getHours()<=9)?`0${time.getHours()}`:time.getHours()}:{(time.getMinutes()>=0 && time.getMinutes()<=9)?`0${time.getMinutes()}`:time.getMinutes()}</span></h5>
-            </div>
-            <div className="content">
-              {
-                data.weather.map((e,i)=>(
-                  <div key={i} className="box">
-                    <img src={`http://openweathermap.org/img/w/${e.icon}.png`} alt="" />
-                    <h3>{e.description}</h3>
-                  </div>
-                ))
-              }
-            </div>
-            <div className="city">
-              <h3>{data.name}</h3>
-            </div>
+            {
+              (error.length>0)?'':
+              <>
+                <div className="temp">
+                  <h3>{data.main.temp}&deg;{(unit==='metric')?'C':'F'}</h3>
+                  <h5>{dayOfWeek},<span> {(time.getHours()>=0 && time.getHours()<=9)?`0${time.getHours()}`:time.getHours()}:{(time.getMinutes()>=0 && time.getMinutes()<=9)?`0${time.getMinutes()}`:time.getMinutes()}</span></h5>
+                </div>
+                <div className="content">
+                  {
+                    data.weather.map((e,i)=>(
+                      <div key={i} className="box">
+                        <img src={`http://openweathermap.org/img/w/${e.icon}.png`} alt="" />
+                        <h3>{e.description}</h3>
+                      </div>
+                    ))
+                  }
+                </div>
+                <div className="city">
+                  <h3>{data.name}</h3>
+                </div>
+              </>
+            }
         </div>
         <div className="right">
           <div className="header">
@@ -134,9 +123,15 @@ const Main = () => {
           </div>
           <div className="wrapper">
             {
+              (error.length>0)?
+                <div className="error">
+                  <h2>Error</h2>
+                  <h3>{error}</h3>
+                </div>
+              :
               (isToday)?
               <TodayDisplay date = {time} unit={unit} data={data}/>:
-              <WeekDisplay/>
+              <WeekDisplay data = {weekData} unit={unit} tdate = {time} tdata={data}/>
             }
           </div>
         </div>

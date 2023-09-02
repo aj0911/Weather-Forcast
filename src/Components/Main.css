@@ -9,7 +9,7 @@
     width: 30%;
     overflow: hidden;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
     gap: 2rem;
@@ -26,6 +26,7 @@
     padding: 10px;
     border-radius: 5px;
     transition: var(--transition);
+    width: 100%;
 }
 .main .left .search:hover{
     transform: scale(1.05);
@@ -42,10 +43,11 @@
     transition: var(--transition);
 }
 .main .left .search input{
-    font-size: 1rem;
+    font-size: .9rem;
     padding: 10px;
     font-weight: 400;
     border: none;
+    width: 70%;
 }
 .main .left .search input::placeholder{
     color: var(--textColor);
@@ -69,7 +71,7 @@
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 }
 .main .left .temp h3{
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 200;
     text-transform: uppercase;
     color: var(--textColor);
@@ -224,7 +226,7 @@
     width: 100%;
 }
 
-.main .right .wrapper .today{
+.main .right .wrapper .today,.main .right .wrapper .week{
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -233,12 +235,13 @@
     gap:1rem;
 }
 
-.main .right .wrapper .today .cards{
+.main .right .wrapper .today .cards,.main .right .wrapper .week .cards{
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .main .right .wrapper .today .cards .card{
@@ -255,7 +258,7 @@
     gap: 1rem;
 }
 
-.main .right .wrapper .today .cards .card:hover{
+.main .right .wrapper .today .cards .card:hover,.main .right .wrapper .week > .cards .card:hover{
     transform: scale(1.05);
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 }
@@ -272,4 +275,104 @@
     font-weight: 700;
     color: var(--textColor);
     text-transform: capitalize;
+}
+
+.main .right .wrapper .week > .cards .card{
+    overflow: hidden;
+    width: calc(calc(100% - 2rem)/3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--textColorLight);
+    padding: 10px;
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.main .right .wrapper .week .cards .card h3{
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--textColor);
+    text-transform: capitalize;
+}
+.main .right .wrapper .week .cards .card h4{
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--textColor);
+    text-transform: capitalize;
+}
+.highlight{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--navColorDark);
+    text-transform: capitalize;
+    margin-top: 20px;
+}
+
+.error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.error h2{
+    font-size: 3rem;
+    font-weight: 500;
+    color: var(--secondaryCol);
+    text-transform: uppercase;
+}
+.error h3{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--textColor);
+    text-transform: capitalize;
+}
+
+/* Responsive */
+/* For Tablets */
+@media screen and (max-width:999px) {
+    .main .left{
+        width: 40%;
+    }
+    .main .right{
+        width: 60%;
+    }
+    .main .left .search{
+        gap: .5rem;
+        font-size: .9rem;
+    }
+    .main .left .search .icon{
+        font-size: .9rem;
+    }
+    .main .left .search input{
+        padding: 5px;
+        font-size: .9rem;
+        width: 80%;
+    }
+    .main .left .temp h3 {
+        font-size: 2rem;
+    }
+    .main .right .wrapper .today .cards .card {
+        width: 100%;
+    }
+    .main .right .wrapper .week > .cards .card {
+        width: calc(50% - .5rem);
+    }
+}
+/* For Phones */
+@media screen and (max-width:599px) {
+    .main{
+        flex-direction: column;
+    }
+    .main .left{
+        padding-top: 20px;
+    }
+    .main .left,.main .right{
+        width: 100%;
+        min-height: fit-content;
+        padding: 50px 5%;
+    }
 }
