@@ -1,9 +1,13 @@
 import React from 'react'
 import './Main.css'
 
-const WeekDisplay = () => {
+const WeekDisplay = ({data}) => {
   return (
-    <div>WeekDisplay</div>
+    <div className="week">
+      <div className="cards">
+
+      </div>
+    </div>
   )
 }
 

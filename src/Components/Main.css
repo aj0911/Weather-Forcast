@@ -3,7 +3,6 @@
     justify-content: center;
     align-items: flex-start;
     width: 100%;
-    min-height: 100vh;
 }
 
 .main .left{
@@ -15,6 +14,7 @@
     flex-direction: column;
     gap: 2rem;
     padding: 3% 20px 3% 5%;
+    min-height: 100vh;
 }
 .main .left .search{
     display: flex;
@@ -53,22 +53,6 @@
 .main .left .search input:focus{
     outline-width: 0;
 }
-.main .left .weather{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: 'hidden';
-    width: 100%;
-    border-radius: 5px;
-    transition: var(--transition);
-}
-.main .left .weather:hover{
-    transform: scale(1.05);
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
-}
-.main .left .weather img{
-    width: 100%;
-}
 
 .main .left .temp{
     display: flex;
@@ -92,7 +76,7 @@
     width: 100%;
 
 }
-.main .left .temp h5{
+.main .left .temp h5,.today h5{
     font-size: 1.1rem;
     font-weight: 500;
     text-transform: capitalize;
@@ -101,7 +85,7 @@
     width: 100%;
     padding-bottom: 2rem;
 }
-.main .left .temp h5 span{
+.main .left .temp h5 span,.today h5 span{
     color: var(--navColorDark);
 }
 .main .left .content{
@@ -177,9 +161,10 @@
     width: 70%;
     padding: 3% 5% 3% 20px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     gap: 1rem;
+    min-height: 100vh;
     flex-direction: column;
 }
 
@@ -233,4 +218,58 @@
 .main .right .header .box:last-child button:hover,.main .right .header .box:last-child .active{
     color: var(--textColorLight);
     background-color: var(--textColor);
+}
+
+.main .right .wrapper{
+    width: 100%;
+}
+
+.main .right .wrapper .today{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    gap:1rem;
+}
+
+.main .right .wrapper .today .cards{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.main .right .wrapper .today .cards .card{
+    overflow: hidden;
+    width: calc(calc(100% - 1rem)/2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--textColorLight);
+    padding: 20px;
+    border-radius: 10px;
+    transition: var(--transition);
+    gap: 1rem;
+}
+
+.main .right .wrapper .today .cards .card:hover{
+    transform: scale(1.05);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.main .right .wrapper .today .cards .card h4{
+    font-size: .9rem;
+    font-weight: 500;
+    color: var(--navColorDark);
+    align-self: flex-start;
+    text-transform: capitalize;
+}
+.main .right .wrapper .today .cards .card h2{
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--textColor);
+    text-transform: capitalize;
 }
